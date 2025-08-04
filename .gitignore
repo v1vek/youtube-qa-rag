@@ -1,0 +1,11 @@
+__pycache__/
+
+# === Virtual Environment ===
+venv/
+.env
+.env.*
+
+# === Audio & Transcripts ===
+data/audio/
+data/transcripts/
+data/chunks/
