@@ -9,3 +9,10 @@ venv/
 data/audio/
 data/transcripts/
 data/chunks/
+
+chroma_db/
+
+# === Whisper / HF cache ===
+.whisper/
+.whisper_cache/
+.cache/
