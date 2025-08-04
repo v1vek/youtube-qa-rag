@@ -1,7 +1,6 @@
-import openai
-from config import openAiClient
+from config import openAiClient, OPENAI_MODEL
 
-def generate_answer(query: str, chunks: list[dict], model="gpt-3.5-turbo") -> str:
+def generate_answer(query: str, chunks: list[dict], model=OPENAI_MODEL) -> str:
     """
     Generate an answer to a query based on relevant chunks using OpenAI's API.
 

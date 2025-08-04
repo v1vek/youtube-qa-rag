@@ -1,7 +1,8 @@
 import yt_dlp
 from pathlib import Path
+from config import AUDIO_DIR
 
-def download_audio(url: str, output_dir ="data/audio") -> str:
+def download_audio(url: str, output_dir = AUDIO_DIR) -> str:
     """
     Download audio from a given URL and save it to the specified output path.
 

@@ -1,12 +1,13 @@
 from sentence_transformers import SentenceTransformer
 import chromadb
+from config import CHROMA_COLLECTION_NAME
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
 client = chromadb.PersistentClient(
     path="./chroma_db",
 )
-collection = client.get_or_create_collection("video_chunks")
+collection = client.get_or_create_collection(CHROMA_COLLECTION_NAME)
 
 def retrieve_relevant_chunks(query: str, video_id: str, top_k = 5) -> list[dict]:
     """

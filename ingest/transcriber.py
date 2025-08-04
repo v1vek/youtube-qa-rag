@@ -1,9 +1,10 @@
 import whisper
 from pathlib import Path
+from config import TRANSCRIPT_DIR, WHISPER_MODEL
 
-model = whisper.load_model("base")
+model = whisper.load_model(WHISPER_MODEL)
 
-def transcribe_audio(audio_path: str, output_dir: str = "data/transcripts") -> str:
+def transcribe_audio(audio_path: str, output_dir: str = TRANSCRIPT_DIR) -> str:
     """
     Transcribe audio from a given file and save the transcript to the specified output path.
 
