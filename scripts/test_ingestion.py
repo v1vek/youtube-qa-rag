@@ -14,10 +14,10 @@ print(f"Downloaded audio to: {audio_path}")
 transcript_path = transcriber.transcribe_audio(audio_path)
 print(f"Transcription saved to: {transcript_path}")
 
-chunks = chunker.chunk_transcript(transcript_path)
+video_id = os.path.splitext(os.path.basename(audio_path))[0]
+chunks = chunker.chunk_transcript(transcript_path, video_id)
 print(f"Transcript chunked into {len(chunks)} parts.")
 
-video_id = os.path.splitext(os.path.basename(audio_path))[0]
 chunk_path = f"{CHUNK_DIR}/{video_id}.json"
 
 os.makedirs(os.path.dirname(chunk_path), exist_ok=True)
