@@ -1,17 +1,25 @@
 # 📺 YouTube Transcription + RAG Question Answering System
 
-This project allows you to ask questions about YouTube videos and get accurate answers by downloading, transcribing, chunking, embedding, and querying the transcript using a Retrieval-Augmented Generation (RAG) pipeline.
+This project allows you to ask questions about YouTube videos and get accurate answers by downloading, transcribing, chunking, embedding, and querying the transcript using a Retrieval-Augmented Generation (RAG) pipeline.  
+
+It supports two modes of RAG:
+
+- **From Scratch** → A minimal, custom-built RAG implementation for full control.
+- **With LangChain** → A LangChain-powered RAG pipeline using ready-made abstractions.
 
 ## ✨ Features
 
-- Download audio from YouTube videos
-- Transcribe speech to text using OpenAI Whisper
-- Chunk the transcript into semantic segments
-- Embed chunks using `SentenceTransformers`
-- Store and retrieve data using `ChromaDB`
-- Retrieve top-k relevant chunks for a query
-- Generate an answer using OpenAI's GPT model
-- Shareable timestamp link to the answer in the video
+- 🎵 **Download audio** directly from YouTube videos
+- 📝 **Transcribe speech to text** using OpenAI Whisper
+- ✂️ **Chunk the transcript** into semantic segments
+- 🔡 **Embed chunks** using `SentenceTransformers`
+- 💾 **Store and retrieve** data using `ChromaDB`
+- 🎯 **Retrieve top-k relevant chunks** for a query
+- 🤖 **Generate an answer** using OpenAI's GPT model
+- ⏱️ **Shareable timestamp link** to the answer in the video
+- 🔀 **Switch between two RAG modes**:
+  - `from_scratch/` → Pure Python implementation  
+  - `with_langchain/` → LangChain-based implementation
 
 ---
 
@@ -20,7 +28,6 @@ This project allows you to ask questions about YouTube videos and get accurate a
 ```text
 project/
 │
-├── main.py # Orchestration script
 ├── ingest/
 │ ├── downloader.py # Downloads audio from YouTube
 │ ├── transcriber.py # Transcribes audio using Whisper
@@ -33,6 +40,12 @@ project/
 ├── rag/
 │ ├── retriever.py # Retrieves relevant chunks
 │ └── answerer.py # Generates answers from chunks
+│
+├── rag_from_scratch/
+│ ├── main.py # Orchestration script
+│
+├── rag_with_langchain/
+│ ├── main.py # Langchain Orchestration script
 │
 ├── utils/
 │ └── extract_video_id.py # Helper to parse YouTube URL
@@ -99,21 +112,23 @@ Replace `your-openai-api-key` with your actual OpenAI key, available at [OpenAI 
 
 ## 📦 Usage
 
-Run the main script:
+You can run the project in **either mode** depending on your preference:
+
+### 1. RAG from Scratch (Vanilla)
 
 ```bash
-python main.py \
+python -m rag_from_scratch.main \
     --url "<https://www.youtube.com/watch?v=VIDEO_ID>" \
     --query "Whose is director of Maareesan?" \
     --top-k 3
 ```
 
-Example:
+### 2. RAG with LangChain
 
 ```bash
-python main.py \
-    --url "<https://www.youtube.com/watch?v=abc123xyz>" \
-    --query "What is the example project being shown?" \
+python -m rag_with_langchain.main.main \
+    --url "<https://www.youtube.com/watch?v=VIDEO_ID>" \
+    --query "Whose is director of Maareesan?" \
     --top-k 3
 ```
 
@@ -152,5 +167,4 @@ The director of Maareesan is Sudheesh Shankar. The movie stars popular actors su
 
 - [ ] Add caching for transcriptions  
 - [ ] Add UI for interactive querying  
-- [ ] Add support for multi-video RAG  
 - [ ] Add test suite  
