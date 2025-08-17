@@ -1,9 +1,11 @@
 import os
 import json
-from config import CHUNK_DIR
 import re
 
-def chunk_transcript(transcript_path: str, video_id: str, chunk_size: int = 500) -> list:
+from langchain.schema import Document
+from config import CHUNK_DIR
+
+def chunk_transcript(transcript_path: str, video_id: str, return_doc: bool = False, chunk_size: int = 500) -> list:
     """
     Chunk a transcript into smaller segments.
 
@@ -15,15 +17,18 @@ def chunk_transcript(transcript_path: str, video_id: str, chunk_size: int = 500)
     if os.path.exists(chunk_path):
         print(f"Chunks already exist for video ID: {video_id}")
         with open(chunk_path, "r", encoding="utf-8") as f:
-            return json.load(f)
-
-    chunks = _chunk_transcript(transcript_path, chunk_size)
-    os.makedirs(CHUNK_DIR, exist_ok=True)
-    with open(chunk_path, "w", encoding="utf-8") as f:
-        json.dump(chunks, f, indent=2)
-
-    print(f"Chunks created and saved to: {chunk_path}")
-    return chunks
+            chunks = json.load(f)
+    else:
+        chunks = _chunk_transcript(transcript_path, chunk_size)
+        os.makedirs(CHUNK_DIR, exist_ok=True)
+        with open(chunk_path, "w", encoding="utf-8") as f:
+            json.dump(chunks, f, indent=2)
+        print(f"Chunks created and saved to: {chunk_path}")
+    
+    if return_doc:
+        return _json_to_documents(chunks, video_id)
+    else:
+        return chunks
 
 def _chunk_transcript(transcript_path: str, chunk_size: int = 500) -> list:
     """
@@ -68,3 +73,18 @@ def _chunk_transcript(transcript_path: str, chunk_size: int = 500) -> list:
         })
 
     return chunks
+
+def _json_to_documents(chunks:list, video_id: str) -> list:
+    """
+    Convert stored JSON chunks into LangChain Document objects.
+    """
+    return [
+        Document(
+            page_content=chunk["content"],
+            metadata={
+                "video_id": video_id,
+                "start_time": chunk["start_time"],
+                "end_time": chunk["end_time"]
+            }
+        ) for chunk in chunks
+    ]
